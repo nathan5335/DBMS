@@ -1,0 +1,93 @@
+<pre>mysql&gt; use college;
+Database changed
+mysql&gt; create table student(rollno int primary key,name varchar(50),place varchar(100),dob date,phno number);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &apos;number)&apos; at line 1
+mysql&gt; create table student(rollno int primary key,name varchar(50),place varchar(100),dob date,phno varchar(10));
+Query OK, 0 rows affected (0.09 sec)
+
+mysql&gt; desc student;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| rollno | int          | NO   | PRI | NULL    |       |
+| name   | varchar(50)  | YES  |     | NULL    |       |
+| place  | varchar(100) | YES  |     | NULL    |       |
+| dob    | date         | YES  |     | NULL    |       |
+| phno   | varchar(10)  | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+5 rows in set (0.02 sec)
+
+mysql&gt; show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| student           |
++-------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+mysql&gt; show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| student           |
++-------------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; alter table student drop phno;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; desc student;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| rollno | int          | NO   | PRI | NULL    |       |
+| name   | varchar(50)  | YES  |     | NULL    |       |
+| place  | varchar(100) | YES  |     | NULL    |       |
+| dob    | date         | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql&gt; alter table student add aadharno varchar(50);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; desc student;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| rollno   | int          | NO   | PRI | NULL    |       |
+| name     | varchar(50)  | YES  |     | NULL    |       |
+| place    | varchar(100) | YES  |     | NULL    |       |
+| dob      | date         | YES  |     | NULL    |       |
+| aadharno | varchar(50)  | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql&gt; alter table student modify column rollno varchar(10);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; desc student;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| rollno   | varchar(10)  | NO   | PRI | NULL    |       |
+| name     | varchar(50)  | YES  |     | NULL    |       |
+| place    | varchar(100) | YES  |     | NULL    |       |
+| dob      | date         | YES  |     | NULL    |       |
+| aadharno | varchar(50)  | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql&gt; drop table student;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql&gt; desc student;
+ERROR 1146 (42S02): Table &apos;college.student&apos; doesn&apos;t exist
+mysql&gt; drop database college;
+Query OK, 1 row affected (0.04 sec)
+</pre>
