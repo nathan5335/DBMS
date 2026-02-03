@@ -1,0 +1,133 @@
+mysql&gt; create database nathan;
+Query OK, 1 row affected (0.03 sec)
+
+mysql&gt; use nathan;
+Database changed
+mysql&gt; create table person(p_id int primary key,name varchar(50) not null, aadhar_no varchar(20) not null unique, age int check(age&gt;18));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql&gt; create table orders(o_id int primary key, o_no int not null, p_id int, foreign key(p_id) references person(p_id));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql&gt; Desc person;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| p_id      | int         | NO   | PRI | NULL    |       |
+| name      | varchar(50) | NO   |     | NULL    |       |
+| aadhar_no | varchar(20) | NO   | UNI | NULL    |       |
+| age       | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql&gt; Desc orders;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| o_id  | int  | NO   | PRI | NULL    |       |
+| o_no  | int  | NO   |     | NULL    |       |
+| p_id  | int  | YES  | MUL | NULL    |       |
++-------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql&gt; alter table orders drop primary key;
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; create table employee(eid int primary key,ename varchar(50) not null);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql&gt; alter table employee drop primary key;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; desc employee;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| eid   | int         | NO   |     | NULL    |       |
+| ename | varchar(50) | NO   |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+
+mysql&gt; alter table employee  add emp_no int primary key;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; create table department(dept_no int primary key,dept_name varchar(50));
+Query OK, 0 rows affected (0.03 sec)
+
+
+mysql&gt; desc department
+    -&gt; ;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| dept_no   | int         | NO   | PRI | NULL    |       |
+| dept_name | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+
+mysql&gt; desc employee;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| eid    | int         | NO   |     | NULL    |       |
+| ename  | varchar(50) | NO   |     | NULL    |       |
+| emp_no | int         | NO   | PRI | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql&gt; alter table employee add dept_no int not null;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql&gt; alter table employee add foreign key deartment(dept_no) references department(dept_no) on delete cascade;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql&gt; desc orders;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| o_id  | int  | NO   |     | NULL    |       |
+| o_no  | int  | NO   |     | NULL    |       |
+| p_id  | int  | YES  | MUL | NULL    |       |
++-------+------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql&gt; desc employee;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| eid     | int         | NO   |     | NULL    |       |
+| ename   | varchar(50) | NO   |     | NULL    |       |
+| emp_no  | int         | NO   | PRI | NULL    |       |
+| dept_no | int         | NO   | MUL | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql&gt; desc department;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| dept_no   | int         | NO   | PRI | NULL    |       |
+| dept_name | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+
+mysql&gt; desc person;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| p_id      | int         | NO   | PRI | NULL    |       |
+| name      | varchar(50) | NO   |     | NULL    |       |
+| aadhar_no | varchar(20) | NO   | UNI | NULL    |       |
+| age       | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+</pre>

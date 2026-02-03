@@ -1,0 +1,204 @@
+<pre>mysql&gt; use user 
+Database changed
+mysql&gt; create table employee(deptno varchar(50) primary key,emp_name varchar(50)not null,designation varchar(50)not null ,salary int not null);
+Query OK, 0 rows affected (0.05 sec)
+
+
+mysql&gt; drop table employee;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql&gt; create table employee(emp_no varchar(50) primary key,emp_name varchar(50)not null,designation varchar(50)not null ,dept_no varchar(50) not null,salary int not null);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql&gt; insert into employee values(&';emp01&';,&';A&';,&';manager&';,&';dp101&';,45000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql&gt; insert into employee values(&';emp02&';,&';b&';,&';analyst&';,&';dp102&';,30000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql&gt; create table department(dept_no int primary key,dept_name varchar(50) not null);
+Query OK, 0 rows affected (0.05 sec)
+
+
+mysql&gt; insert into department values(10,&';IT&';);
+Query OK, 1 row affected (0.02 sec)
+
+mysql&gt; insert into department values(20,&';Admin&';);
+Query OK, 1 row affected (0.03 sec)
+
+mysql&gt; select * from employee;
++--------+----------+-------------+---------+--------+
+| emp_no | emp_name | designation | dept_no | salary |
++--------+----------+-------------+---------+--------+
+| emp01  | A        | manager     | dp101   |  45000 |
+| emp02  | b        | analyst     | dp102   |  30000 |
++--------+----------+-------------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select * from department;
++---------+-----------+
+| dept_no | dept_name |
++---------+-----------+
+|      10 | IT        |
+|      20 | Admin     |
++---------+-----------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select emp_no, emp_name from employee where dept_no=&';dp102&';;
++--------+----------+
+| emp_no | emp_name |
++--------+----------+
+| emp02  | b        |
++--------+----------+
+1 row in set (0.00 sec)
+
+
+mysql&gt; select emp_no,emp_name from employee where salary between 20000 and 50000;
++--------+----------+
+| emp_no | emp_name |
++--------+----------+
+| emp01  | A        |
+| emp02  | b        |
++--------+----------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select distinct designation from employee;
++-------------+
+| designation |
++-------------+
+| manager     |
+| analyst     |
++-------------+
+2 rows in set (0.02 sec)
+
+mysql&gt; alter table employee add phno varchar(50);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; update employee set salary=95000 where designation =&';manager&';;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+mysql&gt; select * from employee;
++--------+----------+-------------+---------+--------+------------+
+| emp_no | emp_name | designation | dept_no | salary | phno       |
++--------+----------+-------------+---------+--------+------------+
+| emp01  | A        | manager     | dp101   |  95000 | NULL       |
+| emp02  | b        | analyst     | dp102   |  30000 | 0987654321 |
++--------+----------+-------------+---------+--------+------------+
+2 rows in set (0.00 sec)
+
+
+mysql&gt; insert into employee values(&';emp03&';,&';c&';,&';analyst&';,&';dp103&';,3000,&';6583926393&';);
+Query OK, 1 row affected (0.03 sec)
+
+mysql&gt; select * from employee;
++--------+----------+-------------+---------+--------+------------+
+| emp_no | emp_name | designation | dept_no | salary | phno       |
++--------+----------+-------------+---------+--------+------------+
+| emp01  | A        | manager     | dp101   |  95000 | NULL       |
+| emp02  | b        | analyst     | dp102   |  30000 | 0987654321 |
+| emp03  | c        | analyst     | dp103   |   3000 | 6583926393 |
++--------+----------+-------------+---------+--------+------------+
+3 rows in set (0.01 sec)
+
+
+mysql&gt; delete from employee where salary=3000;
+Query OK, 1 row affected (0.03 sec)
+
+mysql&gt; select emp_name,phno from employee where emp_name like'A%';
++----------+------+
+| emp_name | phno |
++----------+------+
+| A        | NULL |
++----------+------+
+1 row in set (0.00 sec)
+
+mysql&gt; select * from employee where length(emp_name)&gt;=3 and salary&gt;20000;
+Empty set (0.00 sec)
+
+mysql&gt; select * from employee where emp_no in(&';emp01&';,&';emp02&';);
++--------+----------+-------------+---------+--------+------------+
+| emp_no | emp_name | designation | dept_no | salary | phno       |
++--------+----------+-------------+---------+--------+------------+
+| emp01  | A        | manager     | dp101   |  95000 | NULL       |
+| emp02  | b        | analyst     | dp102   |  30000 | 0987654321 |
++--------+----------+-------------+---------+--------+------------+
+2 rows in set (0.00 sec)
+
+
+mysql&gt; select emp_name,emp_no from employee where salary between 10000 and 30000;
++----------+--------+
+| emp_name | emp_no |
++----------+--------+
+| b        | emp02  |
++----------+--------+
+1 row in set (0.01 sec)
+
+
+mysql&gt; select dept_no, count(*)as total_employees from employee group by dept_no;
++---------+-----------------+
+| dept_no | total_employees |
++---------+-----------------+
+| dp101   |               1 |
+| dp102   |               1 |
++---------+-----------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select emp_name,emp_no from employee where designation=&';manager&'; or designation=&';analyst&';;
++----------+--------+
+| emp_name | emp_no |
++----------+--------+
+| A        | emp01  |
+| b        | emp02  |
++----------+--------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select dept_no, avg(salary)as avg_salary from employee group by dept_no;
++---------+------------+
+| dept_no | avg_salary |
++---------+------------+
+| dp101   | 95000.0000 |
+| dp102   | 30000.0000 |
++---------+------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select dept_no, sum(salary)as total_salary from employee group by dept_no;
++---------+--------------+
+| dept_no | total_salary |
++---------+--------------+
+| dp101   |        95000 |
+| dp102   |        30000 |
++---------+--------------+
+2 rows in set (0.00 sec)
+
+
+mysql&gt; select dept_no, max(salary)as highest_salary, min(salary) as lowest_salary from employee group by dept_no;
++---------+----------------+---------------+
+| dept_no | highest_salary | lowest_salary |
++---------+----------------+---------------+
+| dp101   |          95000 |         95000 |
+| dp102   |          30000 |         30000 |
++---------+----------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select dept_no, sum(salary)as total_salary from employee where dept_no&lt;&gt; &';dp101&'; group by dept_no;
++---------+--------------+
+| dept_no | total_salary |
++---------+--------------+
+| dp102   |        30000 |
++---------+--------------+
+1 row in set (0.00 sec)
+
+
+mysql&gt; select dept_no,avg(salary) as avg_salary from employee where dept_no&lt;&gt;&';dp101&'; group by dept_no having avg(salary)&gt;20000 order by avg_salary ASC;
++---------+------------+
+| dept_no | avg_salary |
++---------+------------+
+| dp102   | 30000.0000 |
++---------+------------+
+
