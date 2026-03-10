@@ -1,0 +1,116 @@
+<pre>mysql&gt; select*from Employee ;
++--------+----------+---------+---------+--------+--------------+
+| emp_id | emp_name | design  | dept_id | salary | joining_date |
++--------+----------+---------+---------+--------+--------------+
+|    110 | Anitta   | Typist  |       1 |  11000 | 2000-03-02   |
+|    111 | Veena    | Analyst |       2 |  30800 | 2001-02-02   |
+|    112 | Mariya   | Manager |       1 |  40000 | 2001-03-02   |
+|    113 | Geethu   | Typist  |       2 |   5500 | 2000-03-02   |
+|    114 | Joseph   | Clerk   |       3 |  22000 | 2002-03-02   |
+|    115 | Alen     | Manager |       3 |  42000 | 2003-03-02   |
+|    116 | Anu      | Analyst |       2 |  30000 | 2003-03-02   |
+|    117 | Nina     | Typist  |    NULL |  11000 | 2004-05-01   |
++--------+----------+---------+---------+--------+--------------+
+8 rows in set (0.01 sec)
+
+mysql&gt; CALL IncreaseSalary();
+Query OK, 0 rows affected (0.03 sec)
+
+mysql&gt; select*from Employee ;
++--------+----------+---------+---------+--------+--------------+
+| emp_id | emp_name | design  | dept_id | salary | joining_date |
++--------+----------+---------+---------+--------+--------------+
+|    110 | Anitta   | Typist  |       1 |  12100 | 2000-03-02   |
+|    111 | Veena    | Analyst |       2 |  30800 | 2001-02-02   |
+|    112 | Mariya   | Manager |       1 |  40000 | 2001-03-02   |
+|    113 | Geethu   | Typist  |       2 |   6050 | 2000-03-02   |
+|    114 | Joseph   | Clerk   |       3 |  24200 | 2002-03-02   |
+|    115 | Alen     | Manager |       3 |  42000 | 2003-03-02   |
+|    116 | Anu      | Analyst |       2 |  30000 | 2003-03-02   |
+|    117 | Nina     | Typist  |    NULL |  12100 | 2004-05-01   |
++--------+----------+---------+---------+--------+--------------+
+8 rows in set (0.00 sec)
+
+mysql&gt; CREATE TABLE Electricity(
+    -&gt;     cust_id INT,
+    -&gt;     cust_name VARCHAR(50),
+    -&gt;     units_consumed INT,
+    -&gt;     bill_amount DECIMAL(10,2)
+    -&gt; );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql&gt; INSERT INTO Electricity VALUES (1,&apos;Arun&apos;,80,NULL);
+Query OK, 1 row affected (0.00 sec)
+
+mysql&gt; INSERT INTO Electricity VALUES (2,&apos;Binu&apos;,150,NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql&gt; INSERT INTO Electricity VALUES (3,&apos;Cathy&apos;,250,NULL);
+Query OK, 1 row affected (0.00 sec)
+
+mysql&gt; select*from Electricity;
++---------+-----------+----------------+-------------+
+| cust_id | cust_name | units_consumed | bill_amount |
++---------+-----------+----------------+-------------+
+|       1 | Arun      |             80 |        NULL |
+|       2 | Binu      |            150 |        NULL |
+|       3 | Cathy     |            250 |        NULL |
++---------+-----------+----------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql&gt; DELIMITER $$
+mysql&gt; 
+mysql&gt; CREATE PROCEDURE CalculateElectricityBill()
+    -&gt; BEGIN
+    -&gt;     DECLARE done INT DEFAULT 0;
+    -&gt;     DECLARE v_id INT;
+    -&gt;     DECLARE v_units INT;
+    -&gt;     DECLARE v_bill DECIMAL(10,2);
+    -&gt; 
+    -&gt;     DECLARE cur CURSOR FOR
+    -&gt;         SELECT cust_id, units_consumed FROM Electricity;
+    -&gt; 
+    -&gt;     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    -&gt; 
+    -&gt;     OPEN cur;
+    -&gt; 
+    -&gt;     read_loop: LOOP
+    -&gt;         FETCH cur INTO v_id, v_units;
+    -&gt; 
+    -&gt;         IF done THEN
+    -&gt;             LEAVE read_loop;
+    -&gt;         END IF;
+    -&gt; 
+    -&gt;         IF v_units &lt;= 100 THEN
+    -&gt;             SET v_bill = v_units * 1.5;
+    -&gt;         ELSEIF v_units &lt;= 200 THEN
+    -&gt;             SET v_bill = (100 * 1.5) + ((v_units - 100) * 2.5);
+    -&gt;         ELSE
+    -&gt;             SET v_bill = (100 * 1.5) + (100 * 2.5) + ((v_units - 200) * 4);
+    -&gt;         END IF;
+    -&gt; 
+    -&gt;         UPDATE Electricity
+    -&gt;         SET bill_amount = v_bill
+    -&gt;         WHERE cust_id = v_id;
+    -&gt; 
+    -&gt;     END LOOP;
+    -&gt; 
+    -&gt;     CLOSE cur;
+    -&gt; END$$
+Query OK, 0 rows affected (0.02 sec)
+
+mysql&gt; 
+mysql&gt; DELIMITER ;
+mysql&gt; CALL CalculateElectricityBill();
+Query OK, 0 rows affected (0.02 sec)
+</pre>
+<pre>mysql&gt; select*from Electricity;
++---------+-----------+----------------+-------------+
+| cust_id | cust_name | units_consumed | bill_amount |
++---------+-----------+----------------+-------------+
+|       1 | Arun      |             80 |      120.00 |
+|       2 | Binu      |            150 |      275.00 |
+|       3 | Cathy     |            250 |      600.00 |
++---------+-----------+----------------+-------------+
+3 rows in set (0.00 sec)
+</pre>
